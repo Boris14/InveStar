@@ -12,6 +12,7 @@ public class NewsAutoScrollField : MonoBehaviour
         "CleanLiving recalls cleaning solution due to safety issues, costing millions and harming brand reputation."
     };
     protected TMP_Text newsText;
+    protected RectTransform rectContainer;
 
     [SerializeField]
     int wrappedDistance = 6;
@@ -24,16 +25,25 @@ public class NewsAutoScrollField : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        rectContainer = GetComponent<RectTransform>();
         newsText = GetComponent<TMP_Text>();
         currentNewsContent = newsContents[Random.Range(0, newsContents.Length)];
         newsText.text = currentNewsContent;
         scrollTimeLeft = 1 / scrollSpeed;
+
+        // Force the TextMeshPro to update its layout
+        newsText.ForceMeshUpdate();
+
+        // Get the rendered bounds of the text
+        var textBounds = newsText.textBounds;
+
+        // Adjust the RectTransform size to match the text bounds
+        rectContainer.sizeDelta = new Vector2(textBounds.size.x, textBounds.size.y);
     }
 
     // Update is called once per frame
     void Update()
     {
-
         scrollTimeLeft -= Time.deltaTime;
         if(scrollTimeLeft <= 0.0f)
         {
