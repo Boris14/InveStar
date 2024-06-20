@@ -361,10 +361,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 905626022}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 50}
+  m_SizeDelta: {x: 1116, y: 50}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &853327905
 MonoBehaviour:
@@ -378,8 +378,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e468835352bb1c40858682abf34bf1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wrappedDistance: 6
-  scrollSpeed: 8
+  newsText: {fileID: 0}
+  rectContainer: {fileID: 0}
+  scrollSpeed: 100
 --- !u!114 &853327906
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -490,6 +491,7 @@ GameObject:
   - component: {fileID: 905626021}
   - component: {fileID: 905626020}
   - component: {fileID: 905626019}
+  - component: {fileID: 905626023}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -580,6 +582,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &905626023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 905626018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09cf94864341fd84091cf29869cafeb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  newsScroll: {fileID: 853327903}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

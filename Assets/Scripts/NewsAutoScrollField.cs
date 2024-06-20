@@ -11,55 +11,56 @@ public class NewsAutoScrollField : MonoBehaviour
         "FuelMaster Inc faces fines and cleanup costs after pipeline leak causes environmental damage.",
         "CleanLiving recalls cleaning solution due to safety issues, costing millions and harming brand reputation."
     };
-    protected TMP_Text newsText;
-    protected RectTransform rectContainer;
+    public TMP_Text newsText;
+    public RectTransform rectContainer;
 
     [SerializeField]
-    int wrappedDistance = 6;
-    [SerializeField]
     float scrollSpeed = 1.0f;
-    float scrollTimeLeft = 0.0f;
-    int lettersLeft = 0;
-    string currentNewsContent;
+
+    bool isTextContentsDisplayed = false;
+
+    public delegate void OnTextContentsDisplayed();
+    public OnTextContentsDisplayed onTextContentsDisplayed;
 
     // Start is called before the first frame update
     void Start()
     {
         rectContainer = GetComponent<RectTransform>();
         newsText = GetComponent<TMP_Text>();
-        currentNewsContent = newsContents[Random.Range(0, newsContents.Length)];
-        newsText.text = currentNewsContent;
-        scrollTimeLeft = 1 / scrollSpeed;
 
-        // Force the TextMeshPro to update its layout
-        newsText.ForceMeshUpdate();
+        newsText.text = newsContents[Random.Range(0, newsContents.Length)];
 
-        // Get the rendered bounds of the text
-        var textBounds = newsText.textBounds;
+        rectContainer.sizeDelta = newsText.GetPreferredValues();
 
-        // Adjust the RectTransform size to match the text bounds
-        rectContainer.sizeDelta = new Vector2(textBounds.size.x, textBounds.size.y);
+        rectContainer.position = new Vector2(rectContainer.sizeDelta.x * 1.5f, 0.0f);
     }
 
     // Update is called once per frame
     void Update()
     {
-        scrollTimeLeft -= Time.deltaTime;
-        if(scrollTimeLeft <= 0.0f)
+        if(rectContainer == null)
         {
-            char removedLetter = newsText.text[0];
-            newsText.text = newsText.text.Remove(0, 1);
-            if(lettersLeft <= 0)
-            {
-                for(int i = 0; i < wrappedDistance; ++i)
-                {
-                    newsText.text += " ";
-                }
-                lettersLeft = currentNewsContent.Length;
-            }
-            newsText.text += removedLetter;
+            Debug.LogError("rectContainer == null");
+            return;
+        }
 
-            scrollTimeLeft = 1.0f / scrollSpeed;
+        Vector2 newNewsPosition = new Vector2(rectContainer.position.x - Time.deltaTime * scrollSpeed, 0.0f);
+
+        // Check if the text is out of the Screen
+        if (rectContainer.position.x < -rectContainer.sizeDelta.x * 0.5f)
+        {
+            newNewsPosition.x = rectContainer.sizeDelta.x * 1.5f;
+            isTextContentsDisplayed = false;
+        }
+        rectContainer.position = newNewsPosition;
+    
+        if(!isTextContentsDisplayed && newNewsPosition.x < 0)
+        {
+            isTextContentsDisplayed = true;
+            if(onTextContentsDisplayed != null)
+            {
+                onTextContentsDisplayed();
+            }
         }
     }
 }
