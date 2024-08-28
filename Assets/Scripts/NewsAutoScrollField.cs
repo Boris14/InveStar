@@ -15,8 +15,8 @@ public class NewsAutoScrollField : MonoBehaviour
 
     bool isScrollActive = false;
 
-
-    public void ActivateScroll(string content, int scrollsCount)
+    // Returns the showcase duration of the content for the given scrollsCount
+    public float ActivateScroll(string content, int scrollsCount)
     {
         newsText.text = "";
         while(scrollsCount > 0)
@@ -32,6 +32,9 @@ public class NewsAutoScrollField : MonoBehaviour
         rectContainer.anchoredPosition = new Vector2(0.0f, 0.0f);
         rectContainer.sizeDelta = newsText.GetPreferredValues();
         isScrollActive = true;
+
+        float timeToScroll = (Mathf.Abs(rectContainer.sizeDelta.x + Screen.width) - rectContainer.anchoredPosition.x) / scrollSpeed;
+        return timeToScroll;
     }
 
     void DeactivateScroll()
