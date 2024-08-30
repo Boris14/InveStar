@@ -13,7 +13,7 @@ public enum CompanyType
     ENERGY
 }
 
-[System.Serializable]
+[Serializable]
 public struct Company
 {
     [SerializeField] public string name;
@@ -28,7 +28,7 @@ public struct Company
     }
 }
 
-[System.Serializable]
+[Serializable]
 public struct News
 {
     [SerializeField] public string content;
@@ -45,15 +45,17 @@ public struct News
 
 public class Game : MonoBehaviour
 {
+    [SerializeField] NewsAutoScrollField newsScrollObject;
     [SerializeField] Company[] companies;
     [SerializeField] News[] news;
 
-    [SerializeField] int newsScrollCount = 2;
-
-    NewsAutoScrollField newsScroll;
+    HUD hud;
     News currentNews;
 
-    float timeUntilNextNews = 0.5f;
+    bool isGameStarted = false;
+    float timeUntilNextNews = 0;
+
+    Company currentCompany;
 
     // Invested money
     float capital = 0;
@@ -64,15 +66,25 @@ public class Game : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        newsScroll = GetComponentInChildren<NewsAutoScrollField>();
+        hud = GetComponentInChildren<HUD>();
+
+        hud.onCompanySelectedDelegate = OnCompanySelected;
+        Company[] pickedCompanies = Utilities.PickRandomUniqueElements(companies, 3);
+        hud.ActivateCompanySelection(pickedCompanies);
+        isGameStarted = false;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(isGameStarted == false)
+        {
+            return;
+        }
+
         if(timeUntilNextNews <= 0)
         {
-            timeUntilNextNews = activateRandomNews();
+            timeUntilNextNews = ActivateRandomNews();
         }
         else
         {
@@ -81,9 +93,23 @@ public class Game : MonoBehaviour
     }
 
     // Returns the showcase duration of the picked news
-    float activateRandomNews()
+    float ActivateRandomNews()
     {
         currentNews = news[Random.Range(0, news.Length)];
-        return newsScroll.ActivateScroll(currentNews.content, newsScrollCount);
+        return hud.ShowNews(currentNews);
+    }
+
+    public void OnCompanySelected(string companyName)
+    {
+        foreach(Company company in companies)
+        {
+            if(company.name == companyName)
+            {
+                currentCompany = company;
+                isGameStarted = true;
+                timeUntilNextNews = ActivateRandomNews();
+                return;
+            }
+        }
     }
 }
