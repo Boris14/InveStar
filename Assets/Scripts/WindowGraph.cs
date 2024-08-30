@@ -45,7 +45,7 @@ public class WindowGraph : MonoBehaviour
         lineGraphVisual = new LineGraphVisual(graphContainer, dotSprite, Color.green, new Color(1, .2f, .2f, 5f));
         barChartVisual = new BarChartVisual(graphContainer, Color.red, .8f);
         tooltipGameObject = graphContainer.Find("Tooltip").gameObject;
-        // InvokeRepeating("Repeat", 2f, 2f);
+        InvokeRepeating("Repeat", 2f, 2f);
 
         valueList = new List<int>() { 5, 99, 32, -18, 64, 50, 40, 30, 25, 22, 20, 25, 35, 40 };
         // valueList = new List<int>() { 5 };
@@ -79,29 +79,35 @@ public class WindowGraph : MonoBehaviour
         ShowTooltip("this is tooltip", new Vector2(100, 100));
     }
 
+    private void Update()
+    {
+        
+        throw new NotImplementedException();
+    }
+
     private void Repeat()
     {
-        if (useBarChart)
-        {
-            Debug.Log("BAR");
-            ShowGraph(valueList, barChartVisual, -1, (int _i) => "D" + (_i + 1),
-                (float _f) => "$" + Mathf.RoundToInt(_f));
-        }
-        else
-        {
-            Debug.Log("LINE");
-            ShowGraph(valueList, lineGraphVisual, -1, (int _i) => "D" + (_i + 1),
-                (float _f) => "$" + Mathf.RoundToInt(_f));
-        }
-
-        useBarChart = !useBarChart;
-        // valueList.Clear();
-        // for (int i = 0; i < 15; i++)
+        // if (useBarChart)
         // {
-        //     valueList.Add(UnityEngine.Random.Range(0, 400));
+        //     Debug.Log("BAR");
+        //     ShowGraph(valueList, barChartVisual, -1, (int _i) => "D" + (_i + 1),
+        //         (float _f) => "$" + Mathf.RoundToInt(_f));
+        // }
+        // else
+        // {
+        //     Debug.Log("LINE");
+        //     ShowGraph(valueList, lineGraphVisual, -1, (int _i) => "D" + (_i + 1),
+        //         (float _f) => "$" + Mathf.RoundToInt(_f));
         // }
         //
-        // ShowGraph(valueList,graphVisual, -1, (int _i) => "D" + (_i + 1), (float _f) => "$" + Mathf.RoundToInt(_f));
+        // useBarChart = !useBarChart;
+        valueList.Clear();
+        for (int i = 0; i < 15; i++)
+        {
+            valueList.Add(UnityEngine.Random.Range(0, 400));
+        }
+        
+        ShowGraph(valueList,graphVisual, -1, (int _i) => "D" + (_i + 1), (float _f) => "$" + Mathf.RoundToInt(_f));
     }
 
     public static void ShowTooltip_Static(string tooltipTxt, Vector2 anchoredPosition)
