@@ -81,8 +81,7 @@ public class WindowGraph : MonoBehaviour
 
     private void Update()
     {
-        
-        throw new NotImplementedException();
+        return;
     }
 
     private void Repeat()

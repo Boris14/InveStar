@@ -131,6 +131,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2172805084775277341, guid: 8bd559d55631db643a22e96179345b31, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2172805084775277341, guid: 8bd559d55631db643a22e96179345b31, type: 3}
+      propertyPath: m_TagString
+      value: CompanySelection
+      objectReference: {fileID: 0}
     - target: {fileID: 2724176997322664097, guid: 8bd559d55631db643a22e96179345b31, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -171,6 +179,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4816996101657422775, guid: 8bd559d55631db643a22e96179345b31, type: 3}
+      propertyPath: m_Alpha
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5734549238497054138, guid: 8bd559d55631db643a22e96179345b31, type: 3}
       propertyPath: newsScrollObject
       value: 
@@ -179,32 +191,19 @@ PrefabInstance:
       propertyPath: m_Name
       value: Game
       objectReference: {fileID: 0}
+    - target: {fileID: 7242782858303404223, guid: 8bd559d55631db643a22e96179345b31, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7242782858303404223, guid: 8bd559d55631db643a22e96179345b31, type: 3}
+      propertyPath: m_TagString
+      value: GameplayScreen
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2724967299728720471, guid: 8bd559d55631db643a22e96179345b31, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 3075181879843853569}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8bd559d55631db643a22e96179345b31, type: 3}
---- !u!1 &3075181879843853568 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2724967299728720471, guid: 8bd559d55631db643a22e96179345b31, type: 3}
-  m_PrefabInstance: {fileID: 3075181879843853567}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &3075181879843853569
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3075181879843853568}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d840037dee9cea849a47d1adb509f83c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  newsScrollCount: 2
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -45,9 +45,10 @@ public struct News
 
 public class Game : MonoBehaviour
 {
-    [SerializeField] NewsAutoScrollField newsScrollObject;
+    //[SerializeField] NewsAutoScrollField newsScrollObject;
     [SerializeField] Company[] companies;
     [SerializeField] News[] news;
+    [SerializeField] float initialNewsDelay = 4;
 
     HUD hud;
     News currentNews;
@@ -92,6 +93,14 @@ public class Game : MonoBehaviour
         }
     }
 
+    void UpdateMoney(float inMoney, float inCapital)
+    {
+        money = inMoney;
+        capital = inCapital;
+
+        hud.setMoneyDisplayText(money, capital);
+    }
+
     // Returns the showcase duration of the picked news
     float ActivateRandomNews()
     {
@@ -107,7 +116,8 @@ public class Game : MonoBehaviour
             {
                 currentCompany = company;
                 isGameStarted = true;
-                timeUntilNextNews = ActivateRandomNews();
+                timeUntilNextNews = initialNewsDelay;
+                UpdateMoney(money, capital);
                 return;
             }
         }

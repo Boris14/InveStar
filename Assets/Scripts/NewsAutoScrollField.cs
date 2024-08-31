@@ -18,7 +18,7 @@ public class NewsAutoScrollField : MonoBehaviour
     // Returns the showcase duration of the content for the given scrollsCount
     public float ActivateScroll(string content, int scrollsCount)
     {
-        newsText.text = "";
+        newsText.text = "BREAKING NEWS: ";
         while(scrollsCount > 0)
         {
             newsText.text += content;

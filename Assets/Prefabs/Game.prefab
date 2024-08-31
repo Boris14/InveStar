@@ -252,7 +252,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5fd54f738a9b214eb25245d0ff0ec48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  newsScrollObject: {fileID: 0}
   companies:
   - name: Quantum Soft
     type: 1
@@ -263,7 +262,7 @@ MonoBehaviour:
   - name: SolarFlare
     type: 2
     description: Manufactures high-efficiency solar panels and energy storage systems.
-  - name: FusionCore
+  - name: Fusion Core
     type: 2
     description: Focuses on developing commercial nuclear fusion reactors and plasma
       technologies.
@@ -323,6 +322,7 @@ MonoBehaviour:
       and green energy systems.
     type: 2
     isGood: 0
+  initialNewsDelay: 4
 --- !u!1001 &2928263232161289767
 PrefabInstance:
   m_ObjectHideFlags: 0
