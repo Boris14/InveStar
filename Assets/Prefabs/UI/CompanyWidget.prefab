@@ -445,8 +445,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278249471
-  m_fontColor: {r: 1, g: 0.90745515, b: 0, a: 1}
+    rgba: 4278244352
+  m_fontColor: {r: 0, g: 0.83137256, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -702,7 +702,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.38202205, g: 0.86652184, b: 0.9245283, a: 1}
+  m_Color: {r: 0.36862746, g: 0.68235296, b: 0.36862746, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -737,7 +737,7 @@ MonoBehaviour:
     color: {r: 0.21960784, g: 1, b: 0.41960785, a: 1}
   - type: 1
     name: TECH
-    color: {r: 1, g: 0.5803922, b: 0.6117647, a: 1}
+    color: {r: 0, g: 0.83137256, b: 0, a: 1}
   - type: 2
     name: ENERGY
-    color: {r: 1, g: 0.9098039, b: 0, a: 1}
+    color: {r: 0, g: 0.83137256, b: 0, a: 1}

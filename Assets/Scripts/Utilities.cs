@@ -33,4 +33,9 @@ public static class Utilities
 
         return result;
     }
+
+    public static float Map(float value, float inMin, float inMax, float outMin, float outMax)
+    {
+        return outMin + ((value - inMin) * (outMax - outMin) / (inMax - inMin));
+    }
 }

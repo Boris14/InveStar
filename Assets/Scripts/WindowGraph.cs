@@ -31,6 +31,10 @@ public class WindowGraph : MonoBehaviour
     IGraphVisual lineGraphVisual;
     IGraphVisual barChartVisual;
 
+    public delegate void OnButtonClickedDelegate();
+
+    public OnButtonClickedDelegate onBuyButtonClickedDelegate;
+    public OnButtonClickedDelegate onSellButtonClickedDelegate;
 
     private void Awake()
     {
@@ -76,7 +80,10 @@ public class WindowGraph : MonoBehaviour
             IncreaseVisibleAmount();
         };
 
-        ShowTooltip("this is tooltip", new Vector2(100, 100));
+        transform.Find("BuyBtn").GetComponent<ButtonUI>().ClickFunc = OnBuyButtonClicked;
+        transform.Find("SellBtn").GetComponent<ButtonUI>().ClickFunc = OnSellButtonClicked;
+
+        //ShowTooltip("this is tooltip", new Vector2(100, 100));
     }
 
     private void Update()
@@ -162,6 +169,16 @@ public class WindowGraph : MonoBehaviour
     private void SetGraphVisual(IGraphVisual _graphVisual)
     {
         ShowGraph(this.valueList, _graphVisual, this.maxVisibleValueAmount, this.getAxisLabelX, this.getAxisLabelY);
+    }
+
+    void OnBuyButtonClicked()
+    {
+        onBuyButtonClickedDelegate();
+    }
+
+    void OnSellButtonClicked()
+    {
+        onSellButtonClickedDelegate();
     }
 
     //if you want to show the all numbers maxVisibleValueAmount should be < 0

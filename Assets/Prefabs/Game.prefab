@@ -256,24 +256,30 @@ MonoBehaviour:
   - name: Quantum Soft
     type: 1
     description: Pioneers in quantum computing software and cloud-based quantum services.
+    stockPrice: 500
   - name: NexusNet
     type: 1
     description: Develops cutting-edge 6G network infrastructure and IoT solutions.
+    stockPrice: 200
   - name: SolarFlare
     type: 2
     description: Manufactures high-efficiency solar panels and energy storage systems.
+    stockPrice: 300
   - name: Fusion Core
     type: 2
     description: Focuses on developing commercial nuclear fusion reactors and plasma
       technologies.
+    stockPrice: 100
   - name: VitaCure
     type: 0
     description: A leading developer of innovative gene therapies and personalized
       medicine solutions.
+    stockPrice: 400
   - name: MediTech
     type: 0
     description: Specializes in advanced medical devices and AI-powered diagnostic
       tools.
+    stockPrice: 350
   news:
   - content: Breakthrough in Alzheimer's treatment shows promising results in clinical
       trials.
@@ -323,6 +329,11 @@ MonoBehaviour:
     type: 2
     isGood: 0
   initialNewsDelay: 4
+  initialCapital: 5000
+  initialMoney: 5000
+  maxPriceDeviationPercentNormal: 5
+  priceDeviationPercentPerAction: {x: 7, y: 10}
+  changePriceTimerRate: 2
 --- !u!1001 &2928263232161289767
 PrefabInstance:
   m_ObjectHideFlags: 0
