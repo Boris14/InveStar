@@ -61,18 +61,29 @@ public class Game : MonoBehaviour
     [SerializeField] Vector2 companyStockPriceLimits = new Vector2(0, 1000);
     [SerializeField] float changePriceTimerRate = 2;
     [SerializeField] int maxCombo = 5;
+    [SerializeField] int maxHistoryDays = 10;
 
+    // Stores all the UI (what's shown to the Player)
     HUD hud;
 
     bool isGameStarted = false;
-    
+
+    // Used to store the Company's Stock Price for each day
+    Queue<float> stockPriceHistory = new Queue<float>();
+
     float timeUntilNextNews = 0;
     float timeUntilPriceChange = 0;
 
+    // The maximum change in the Company's Stock Price without a Player's action
     float maxPriceDeviationNormal = 0;
+
+    // The minimum and maximum Stock Price changes when a Player performs an action (Buy/Sell)
     Vector2 priceDeviationPerAction;
 
+    // The Company which the Player has invested in
     Company currentCompany;
+
+    // The currently scrolling News
     News currentNews;
 
     // Invested Money
@@ -88,7 +99,6 @@ public class Game : MonoBehaviour
     float sellPrice = 0;
     int combo = 0;
 
-    // Start is called before the first frame update
     void Start()
     {
         hud = GetComponentInChildren<HUD>();
@@ -153,6 +163,9 @@ public class Game : MonoBehaviour
     void ChangeStockPrice(float delta)
     {
         currentCompany.stockPrice = Math.Clamp(currentCompany.stockPrice + delta, companyStockPriceLimits.x, companyStockPriceLimits.y);
+
+        stockPriceHistory.Dequeue();
+        stockPriceHistory.Enqueue(currentCompany.stockPrice);
 
         capital = ownedStocks * currentCompany.stockPrice;
 
@@ -232,7 +245,12 @@ public class Game : MonoBehaviour
 
                 timeUntilNextNews = initialNewsDelay;
                 timeUntilPriceChange = changePriceTimerRate;
-                
+
+                for (int i = 0; i < maxHistoryDays; ++i)
+                {
+                    stockPriceHistory.Enqueue(Random.Range(companyStockPriceLimits.x, company.stockPrice * 2));
+                }
+
                 isGameStarted = true;
 
                 UpdateMoneyUI();
