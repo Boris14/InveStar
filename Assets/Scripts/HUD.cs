@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -6,6 +7,11 @@ using UnityEngine;
 public class HUD : MonoBehaviour
 {
     [SerializeField] int newsScrollCount = 2;
+    [SerializeField] float maxPulseShrinkedScale = 0.65f;
+    [SerializeField] float maxPulseGrownScale = 1.7f;
+    [SerializeField] Vector2 pulseMoneyChangeRange = new Vector2(200, 800);
+    [SerializeField] float pusleDuration = 0.1f;
+
     [SerializeField] TMP_Text moneyText;
     [SerializeField] TMP_Text capitalText;
     [SerializeField] TMP_Text stocksText;
@@ -18,12 +24,17 @@ public class HUD : MonoBehaviour
     WindowGraph windowGraph;
     TMP_Text companyTitleText;
 
+    Dictionary<Transform, Coroutine> pusleCoroutines = new Dictionary<Transform, Coroutine>();
+
     public delegate void OnButtonClickedDelegate();
     public delegate void OnCompanySelectedDelegate(string companyName);
 
     public OnCompanySelectedDelegate onCompanySelectedDelegate;
     public OnButtonClickedDelegate onBuyButtonClickedDelegate;
     public OnButtonClickedDelegate onSellButtonClickedDelegate;
+
+    float money = 0;
+    float capital = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -74,6 +85,14 @@ public class HUD : MonoBehaviour
         }
     }
 
+    public void SetActionButtonsText(float buyPrice, float sellPrice)
+    {
+        string buyText = "Buy\n(" + Math.Floor(buyPrice) + "$)";
+        string sellText = "Sell\n(" + Math.Floor(sellPrice) + "$)";
+
+        windowGraph.SetActionButtonsText(buyText, sellText);
+    }
+
     public void SetCompanyTitle(string companyName, CompanyType type)
     {
         companyTitleText.text = companyName + " (" + type.ToString() + ")";
@@ -84,11 +103,66 @@ public class HUD : MonoBehaviour
         return newsScroll.ActivateScroll(news.content, newsScrollCount);
     }
 
-    public void SetMoneyDisplayText(float money, float capital, float stocks, float stockPrice)
+    public void SetMoneyDisplayText(float inMoney, float inCapital, float stocks, float stockPrice)
     {
-        moneyText.text = "Money:\n" + money.ToString("F2") + "$";
-        capitalText.text = "Capital:\n" + capital.ToString("F2") + "$";
+        moneyText.text = "Money:\n" + inMoney.ToString("F2") + "$";
+        capitalText.text = "Capital:\n" + inCapital.ToString("F2") + "$";
         stocksText.text = "Stocks:\n" + stocks.ToString("F1") + "\n(x " + stockPrice.ToString("F0") + "$)";
+
+        PlayPulseAnimation(moneyText, inMoney - money);
+        PlayPulseAnimation(capitalText, inCapital - capital);
+
+        money = inMoney;
+        capital = inCapital;
+    }
+
+    public void PlayPulseAnimation(TMP_Text textToPusle, float changedAmount)
+    {
+        changedAmount = Math.Clamp(changedAmount, -pulseMoneyChangeRange.y, pulseMoneyChangeRange.y);
+
+        if(Math.Abs(changedAmount) < pulseMoneyChangeRange.x)
+        {
+            return;
+        }
+
+        float pulseEndScale = changedAmount < 0 ? Utilities.Map(changedAmount, -pulseMoneyChangeRange.y, 0, maxPulseShrinkedScale, 1) :
+            Utilities.Map(changedAmount, 0, pulseMoneyChangeRange.y, 1, maxPulseGrownScale);
+
+        Transform textTransform = textToPusle.transform;
+        if(pusleCoroutines.ContainsKey(textTransform) && pusleCoroutines[textTransform] != null)
+        {
+            StopCoroutine(pusleCoroutines[textTransform]);
+            textTransform.localScale = Vector3.one;
+        }
+
+        pusleCoroutines[textTransform] = StartCoroutine(Pusle(textTransform, pulseEndScale, pusleDuration));
+    }
+
+    IEnumerator Pusle(Transform textTransform, float endScale, float duration)
+    {
+        float updateRate = 0.02f;
+        float originalScale = textTransform.localScale.x;
+        float scaleChangePerTick = 2 * Math.Abs(originalScale - endScale) / (duration / updateRate);
+        float halfDuration = duration / 2.0f;
+
+        bool isShrinking = endScale < originalScale;
+        bool hasReachedEndScale = false;
+
+        while(duration > 0)
+        {
+            textTransform.localScale += Vector3.one * scaleChangePerTick * (isShrinking ? -1 : 1);
+
+            if(hasReachedEndScale == false && duration <= halfDuration)
+            {
+                isShrinking = !isShrinking;
+                hasReachedEndScale = true;
+            }
+
+            duration -= updateRate;
+            yield return new WaitForSeconds(updateRate);
+        }
+
+        textTransform.localScale = Vector3.one * originalScale;
     }
 
     void OnCompanySelected(string companyName)

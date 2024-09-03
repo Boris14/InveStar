@@ -19,6 +19,8 @@ public class WindowGraph : MonoBehaviour
     private RectTransform dashTemplateY;
     private List<GameObject> gameObjectList;
     private GameObject tooltipGameObject;
+    private TMP_Text buyButtonText;
+    private TMP_Text sellButtonText;
 
     //Graph memorized values
     private List<int> valueList;
@@ -80,8 +82,13 @@ public class WindowGraph : MonoBehaviour
             IncreaseVisibleAmount();
         };
 
-        transform.Find("BuyBtn").GetComponent<ButtonUI>().ClickFunc = OnBuyButtonClicked;
-        transform.Find("SellBtn").GetComponent<ButtonUI>().ClickFunc = OnSellButtonClicked;
+        Transform buyButtonTransform = transform.Find("BuyBtn");
+        buyButtonTransform.GetComponent<ButtonUI>().ClickFunc = OnBuyButtonClicked;
+        buyButtonText = buyButtonTransform.GetComponentInChildren<TMP_Text>();
+
+        Transform sellButtonTransform = transform.Find("SellBtn");
+        sellButtonTransform.GetComponent<ButtonUI>().ClickFunc = OnSellButtonClicked;
+        sellButtonText = sellButtonTransform.GetComponentInChildren<TMP_Text>();
 
         //ShowTooltip("this is tooltip", new Vector2(100, 100));
     }
@@ -119,6 +126,12 @@ public class WindowGraph : MonoBehaviour
     public static void ShowTooltip_Static(string tooltipTxt, Vector2 anchoredPosition)
     {
         instance.ShowTooltip(tooltipTxt,anchoredPosition);
+    }
+
+    public void SetActionButtonsText(string buyBtnText, string sellBtnText)
+    {
+        buyButtonText.text = buyBtnText;
+        sellButtonText.text = sellBtnText;
     }
 
     private void ShowTooltip(string tooltipTxt, Vector2 anchoredPosition)

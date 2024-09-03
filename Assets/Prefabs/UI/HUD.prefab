@@ -290,8 +290,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278244352
-  m_fontColor: {r: 0, g: 0.83137256, b: 0, a: 1}
+    rgba: 4278239231
+  m_fontColor: {r: 1, g: 0.7490196, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1064,6 +1064,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   newsScrollCount: 1
+  maxPulseShrinkedScale: 0.65
+  maxPulseGrownScale: 1.7
+  pulseMoneyChangeRange: {x: 200, y: 1200}
+  pusleDuration: 0.18
   moneyText: {fileID: 7980216539036788332}
   capitalText: {fileID: 3252837454890107821}
   stocksText: {fileID: 8414627669618316827}
@@ -1093,7 +1097,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2182595791721399828}
   - {fileID: 6879534395839556615}
@@ -1284,7 +1288,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 2182595791721399828}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

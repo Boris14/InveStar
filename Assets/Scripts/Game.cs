@@ -49,13 +49,17 @@ public class Game : MonoBehaviour
 {
     [SerializeField] Company[] companies;
     [SerializeField] News[] news;
+    
     [SerializeField] float initialNewsDelay = 4;
     [SerializeField] float initialCapital = 5000;
     [SerializeField] float initialMoney = 5000;
+    [SerializeField] float initialBuyPrice = 300;
+    [SerializeField] float initialSellPrice = 300;
+
     [SerializeField] float maxPriceDeviationPercentNormal = 5;
     [SerializeField] Vector2 priceDeviationPercentPerAction;
+    [SerializeField] Vector2 companyStockPriceLimits = new Vector2(0, 1000);
     [SerializeField] float changePriceTimerRate = 2;
-    [SerializeField] float actionPrice = 300;
     [SerializeField] int maxCombo = 5;
 
     HUD hud;
@@ -80,6 +84,8 @@ public class Game : MonoBehaviour
     // Capital / Company's Stock Price
     float ownedStocks = 0;
 
+    float buyPrice = 0;
+    float sellPrice = 0;
     int combo = 0;
 
     // Start is called before the first frame update
@@ -92,6 +98,8 @@ public class Game : MonoBehaviour
 
         money = initialMoney;
         capital = initialCapital;
+        buyPrice = initialBuyPrice;
+        sellPrice = initialSellPrice;
 
         Company[] pickedCompanies = Utilities.PickRandomUniqueElements(companies, 3);
         hud.ActivateCompanySelection(pickedCompanies);
@@ -144,7 +152,7 @@ public class Game : MonoBehaviour
 
     void ChangeStockPrice(float delta)
     {
-        currentCompany.stockPrice += delta;
+        currentCompany.stockPrice = Math.Clamp(currentCompany.stockPrice + delta, companyStockPriceLimits.x, companyStockPriceLimits.y);
 
         capital = ownedStocks * currentCompany.stockPrice;
 
@@ -156,11 +164,12 @@ public class Game : MonoBehaviour
     void ChangeOwnedStocks(float delta, bool isGood)
     {
         ownedStocks += delta / currentCompany.stockPrice + Utilities.Map(combo, 0, maxCombo, 0, 5);
+        
+        capital = ownedStocks * currentCompany.stockPrice;
+        
         money -= delta;
 
         combo = Math.Min(isGood ? combo + 1 : 0, maxCombo);
-
-        UpdateMoneyUI();
     }
 
     void OnBuyButtonClicked()
@@ -170,7 +179,7 @@ public class Game : MonoBehaviour
             return;
         }
 
-        float boughtAmount = money > actionPrice ? actionPrice : money;
+        float boughtAmount = money > buyPrice ? buyPrice : money;
         float priceChange = CalculatePriceChange(true);
         
         ChangeOwnedStocks(boughtAmount, priceChange > 0);
@@ -184,7 +193,7 @@ public class Game : MonoBehaviour
             return;
         }
 
-        float soldAmount = capital > actionPrice ? actionPrice : capital;
+        float soldAmount = capital > sellPrice ? sellPrice : capital;
         float priceChange = CalculatePriceChange(true);
 
         ChangeOwnedStocks(-soldAmount, priceChange < 0);
@@ -193,9 +202,12 @@ public class Game : MonoBehaviour
 
     void UpdateMoneyUI()
     {
-        float stocks = capital / currentCompany.stockPrice;
+        hud.SetMoneyDisplayText(money, capital, ownedStocks, currentCompany.stockPrice);
 
-        hud.SetMoneyDisplayText(money, capital, stocks, currentCompany.stockPrice);
+        float possibleBuyPrice = money > buyPrice ? buyPrice : money;
+        float possibleSellPrice = capital > sellPrice ? sellPrice : capital;
+
+        hud.SetActionButtonsText(possibleBuyPrice, possibleSellPrice);
     }
 
     // Returns the showcase duration of the picked news
