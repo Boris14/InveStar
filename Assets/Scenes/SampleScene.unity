@@ -187,6 +187,22 @@ PrefabInstance:
       propertyPath: newsScrollObject
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 5734549238497054138, guid: 8bd559d55631db643a22e96179345b31, type: 3}
+      propertyPath: changePriceTimerRate
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5734549238497054138, guid: 8bd559d55631db643a22e96179345b31, type: 3}
+      propertyPath: maxPriceDeviationPercentNormal
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5734549238497054138, guid: 8bd559d55631db643a22e96179345b31, type: 3}
+      propertyPath: priceDeviationPercentPerAction.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5734549238497054138, guid: 8bd559d55631db643a22e96179345b31, type: 3}
+      propertyPath: priceDeviationPercentPerAction.y
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 6293166403722496479, guid: 8bd559d55631db643a22e96179345b31, type: 3}
       propertyPath: m_Name
       value: Game
