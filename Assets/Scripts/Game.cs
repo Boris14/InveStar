@@ -117,6 +117,8 @@ public class Game : MonoBehaviour
         if (timeUntilPriceChange <= 0)
         {
             ChangeStockPrice(CalculatePriceChange(false));
+            //TODO update the graph visuals
+            hud.AddGraphValue((int)currentCompany.stockPrice);
         }
         else
         {

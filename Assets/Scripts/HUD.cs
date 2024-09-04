@@ -29,9 +29,12 @@ public class HUD : MonoBehaviour
     public delegate void OnButtonClickedDelegate();
     public delegate void OnCompanySelectedDelegate(string companyName);
 
+    // public delegate void OnStockChangeDelegate();
+
     public OnCompanySelectedDelegate onCompanySelectedDelegate;
     public OnButtonClickedDelegate onBuyButtonClickedDelegate;
     public OnButtonClickedDelegate onSellButtonClickedDelegate;
+    // public OnStockChangeDelegate onStockChangeDelegate;
 
     float money = 0;
     float capital = 0;
@@ -114,6 +117,11 @@ public class HUD : MonoBehaviour
 
         money = inMoney;
         capital = inCapital;
+    }
+
+    public void AddGraphValue(int amount)
+    {
+        windowGraph.AddNextStockValue(amount);
     }
 
     public void PlayPulseAnimation(TMP_Text textToPusle, float changedAmount)
