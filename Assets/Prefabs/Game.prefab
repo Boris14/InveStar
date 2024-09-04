@@ -335,9 +335,9 @@ MonoBehaviour:
   initialBuyPrice: 300
   initialSellPrice: 300
   maxPriceDeviationPercentNormal: 5
-  priceDeviationPercentPerAction: {x: 7, y: 10}
-  companyStockPriceLimits: {x: 0, y: 1000}
-  changePriceTimerRate: 2
+  priceDeviationPercentPerAction: {x: 10, y: 20}
+  companyStockPriceLimits: {x: 0, y: 1200}
+  changePriceTimerRate: 1
   maxCombo: 5
 --- !u!1 &8390886308614578514
 GameObject:
