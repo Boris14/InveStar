@@ -173,11 +173,15 @@ public class Game : MonoBehaviour
 
     void ChangeOwnedStocks(float delta, bool isGood)
     {
-        ownedStocks += delta / currentCompany.stockPrice + Utilities.Map(combo, 0, maxCombo, 0, 5);
-        
-        capital = ownedStocks * currentCompany.stockPrice;
-        
+        if(currentCompany.stockPrice <= 0)
+        {
+            return;
+        }
+    
+        capital += delta;
         money -= delta;
+
+        ownedStocks = capital / currentCompany.stockPrice; //+ Utilities.Map(combo, 0, maxCombo, 0, 5);
 
         combo = Math.Min(isGood ? combo + 1 : 0, maxCombo);
     }
