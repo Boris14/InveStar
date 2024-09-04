@@ -12,6 +12,12 @@ public class WindowGraph : MonoBehaviour
 {
     private static WindowGraph instance;
     [SerializeField] private Sprite dotSprite;
+
+    [SerializeField] private AudioSource src;
+    [SerializeField] private AudioClip click;
+    [SerializeField] private AudioClip moneySound;
+    [SerializeField] private AudioClip ambiance;
+
     private RectTransform graphContainer;
     private RectTransform labelTemplateX;
     private RectTransform labelTemplateY;
@@ -33,15 +39,34 @@ public class WindowGraph : MonoBehaviour
     IGraphVisual lineGraphVisual;
     IGraphVisual barChartVisual;
 
+    #region SFX
+
+    private void BtnClick()
+    {
+        src.clip = click;
+        src.Play();
+    }
+
+    private void MoneySound()
+    {
+        src.clip = moneySound;
+        src.Play();
+    }
+
+    // private void MoneySound()
+    // {
+    //     src.clip = moneySound;
+    //     src.Play();
+    //     
+    // }
+
+    #endregion
+
     public delegate void OnButtonClickedDelegate();
-
-    // public delegate void OnStockChangeDelegate();
-
 
     public OnButtonClickedDelegate onBuyButtonClickedDelegate;
 
     public OnButtonClickedDelegate onSellButtonClickedDelegate;
-    // public OnStockChangeDelegate onStockChangeDelegate;
 
     private void Awake()
     {
@@ -54,7 +79,7 @@ public class WindowGraph : MonoBehaviour
         gameObjectList = new List<GameObject>();
 
         lineGraphVisual = new LineGraphVisual(graphContainer, dotSprite, Color.green, new Color(1, .2f, .2f, 5f));
-        barChartVisual = new BarChartVisual(graphContainer, Color.red, .8f);
+        barChartVisual = new BarChartVisual(graphContainer, Color.blue, .8f);
         tooltipGameObject = graphContainer.Find("Tooltip").gameObject;
         // InvokeRepeating("Repeat", 2f, 2f);
 
@@ -62,18 +87,29 @@ public class WindowGraph : MonoBehaviour
         // valueList = new List<int>() { 5 };
         ShowGraph(valueList, barChartVisual, -1, (int _i) => "D " + (_i + 1), (float _f) => "$" + Mathf.RoundToInt(_f));
 
+        #region ChartBtn
 
         transform.Find("BarChartBtn").GetComponent<ButtonUI>().ClickFunc = () =>
         {
             Debug.Log("BarChart");
             SetGraphVisual(barChartVisual);
         };
+        transform.Find("BarChartBtn").GetComponent<ButtonUI>().ClickFunc += BtnClick;
+
+        #endregion
+
+        #region LineGrapgBtn
 
         transform.Find("LineGraphBtn").GetComponent<ButtonUI>().ClickFunc = () =>
         {
             Debug.Log("GraphChart");
             SetGraphVisual(lineGraphVisual);
         };
+        transform.Find("LineGraphBtn").GetComponent<ButtonUI>().ClickFunc += BtnClick;
+
+        #endregion
+
+        #region DecreaseBtn
 
         transform.Find("DecreaseVisibleAmountBtn").GetComponent<ButtonUI>().ClickFunc = () =>
         {
@@ -81,19 +117,40 @@ public class WindowGraph : MonoBehaviour
             DecreaseVisibleAmount();
         };
 
+        transform.Find("DecreaseVisibleAmountBtn").GetComponent<ButtonUI>().ClickFunc += BtnClick;
+
+        #endregion
+
+        #region IncreaseBtn
+
         transform.Find("IncreaseVisibleAmountBtn").GetComponent<ButtonUI>().ClickFunc = () =>
         {
             Debug.Log("Decrease");
             IncreaseVisibleAmount();
         };
+        transform.Find("IncreaseVisibleAmountBtn").GetComponent<ButtonUI>().ClickFunc += BtnClick;
+
+        #endregion
+
+        #region BuyBtn
 
         Transform buyButtonTransform = transform.Find("BuyBtn");
         buyButtonTransform.GetComponent<ButtonUI>().ClickFunc = OnBuyButtonClicked;
         buyButtonText = buyButtonTransform.GetComponentInChildren<TMP_Text>();
 
+        buyButtonTransform.GetComponent<ButtonUI>().ClickFunc += MoneySound;
+
+        #endregion
+
+        #region SellBtn
+
         Transform sellButtonTransform = transform.Find("SellBtn");
         sellButtonTransform.GetComponent<ButtonUI>().ClickFunc = OnSellButtonClicked;
         sellButtonText = sellButtonTransform.GetComponentInChildren<TMP_Text>();
+
+        sellButtonTransform.GetComponent<ButtonUI>().ClickFunc += MoneySound;
+
+        #endregion
 
         // onStockChangeDelegate
         //ShowTooltip("this is tooltip", new Vector2(100, 100));
@@ -231,7 +288,7 @@ public class WindowGraph : MonoBehaviour
 
         if (maxVisibleValueAmount > valueList.Count)
         {
-            maxVisibleValueAmount = 3;
+            maxVisibleValueAmount = valueList.Count;
         }
 
         // this.maxVisibleValueAmount = maxVisibleValueAmount;
@@ -377,12 +434,14 @@ public class WindowGraph : MonoBehaviour
         private RectTransform graphContainer;
         private Color barColor;
         private float barWidthMultiplier;
+        private Vector2 lastGraphPosition;
 
         public BarChartVisual(RectTransform graphContainer, Color barColor, float barWidthMultiplier)
         {
             this.graphContainer = graphContainer;
             this.barColor = barColor;
             this.barWidthMultiplier = barWidthMultiplier;
+            this.lastGraphPosition = new Vector2(0,0);
         }
 
         public List<GameObject> AddGraphVisual(Vector2 graphPosition, float graphPositionWidth, bool isLast)
@@ -400,13 +459,27 @@ public class WindowGraph : MonoBehaviour
         {
             GameObject gameObject = new GameObject("bar", typeof(Image));
             gameObject.transform.SetParent(graphContainer, false);
-            gameObject.GetComponent<Image>().color = barColor;
+            if (graphPosition.y > lastGraphPosition.y)
+            {
+                //profit
+                gameObject.GetComponent<Image>().color = Color.green;
+            }else if (graphPosition.y < lastGraphPosition.y)
+            {
+                //loss
+                gameObject.GetComponent<Image>().color = Color.red;
+            }
+            else
+            {
+                gameObject.GetComponent<Image>().color = barColor;
+            }
             RectTransform rectTransform = gameObject.GetComponent<RectTransform>();
             rectTransform.anchoredPosition = new Vector2(graphPosition.x, 0f);
             rectTransform.sizeDelta = new Vector2(barWidth * barWidthMultiplier, graphPosition.y);
             rectTransform.anchorMin = new Vector2(0, 0);
             rectTransform.anchorMax = new Vector2(0, 0);
             rectTransform.pivot = new Vector2(.5f, 0f);
+
+            this.lastGraphPosition = graphPosition;
             return gameObject;
         }
     }

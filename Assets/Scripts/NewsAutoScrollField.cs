@@ -65,7 +65,7 @@ public class NewsAutoScrollField : MonoBehaviour
             return;
         }
 
-        Vector2 newNewsPosition = new Vector2(rectContainer.anchoredPosition.x - Time.deltaTime * scrollSpeed, 0.0f);
+        Vector2 newNewsPosition = new Vector2(rectContainer.anchoredPosition.x - Time.deltaTime * scrollSpeed, 50.0f);
 
         // Check if the text is out of the Screen
         if (rectContainer.anchoredPosition.x < -(rectContainer.sizeDelta.x + Screen.width))

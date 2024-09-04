@@ -2,6 +2,7 @@ using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -73,8 +74,10 @@ public class CompanyWidget : MonoBehaviour
         }
     }
 
-    void OnClicked()
+    async void OnClicked()
     {
+        //wait a bit to hear the sound effect of clicking
+        await Task.Delay(1000);
         onSelectedDelegate(titleText.text);
     }
 }
