@@ -354,7 +354,7 @@ public class WindowGraph : MonoBehaviour
             // GameObject barGameObject = CreateBar(new Vector2(xPosition,yPosition),xSize * .9f);
             // gameObjectList.AddRange(barChartVisual.AddGraphVisual(new Vector2(xPosition, yPosition), xSize));
             string tooltipTxt = getAxisLabelY(valueList[i]);
-            Debug.Log("Draw: " + i + " " + xPosition + "," + yPosition);
+            // Debug.Log("Draw: " + i + " " + xPosition + "," + yPosition);
             if (i == Mathf.Max(valueList.Count - maxVisibleValueAmount - 1, 0))
             {
                 gameObjectList.AddRange(graphVisual.AddGraphVisual(new Vector2(xPosition, yPosition), xSize, true));
@@ -552,8 +552,8 @@ public class WindowGraph : MonoBehaviour
             }
 
             lastDotGameObject = dotGameObject;
-            Debug.Log("AddGraph 1: " + " " + lastDotGameObject.GetComponent<RectTransform>().anchoredPosition);
-            Debug.Log("AddGraph 2: " + " " + dotGameObject.GetComponent<RectTransform>().anchoredPosition);
+            // Debug.Log("AddGraph 1: " + " " + lastDotGameObject.GetComponent<RectTransform>().anchoredPosition);
+            // Debug.Log("AddGraph 2: " + " " + dotGameObject.GetComponent<RectTransform>().anchoredPosition);
 
 
             return gameObjectList;

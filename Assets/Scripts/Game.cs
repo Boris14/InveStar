@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 public enum CompanyType
@@ -137,6 +138,8 @@ public class Game : MonoBehaviour
         {
             timeUntilNextNews -= Time.deltaTime;
         }
+
+        CheckCondition();
     }
 
     float CalculatePriceChange(bool isActionInitated)
@@ -247,6 +250,18 @@ public class Game : MonoBehaviour
 
                 return;
             }
+        }
+    }
+
+    public void CheckCondition()
+    {
+        if (capital <= 0 && money <= 0)
+        {
+            SceneManager.LoadScene("LostScene");
+        }else if (money >= 50_000)
+        {
+            Debug.Log("WON!");
+            SceneManager.LoadScene("WinScene");
         }
     }
 }
