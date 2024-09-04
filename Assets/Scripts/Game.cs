@@ -61,15 +61,11 @@ public class Game : MonoBehaviour
     [SerializeField] Vector2 companyStockPriceLimits = new Vector2(0, 1000);
     [SerializeField] float changePriceTimerRate = 2;
     [SerializeField] int maxCombo = 5;
-    [SerializeField] int maxHistoryDays = 10;
 
     // Stores all the UI (what's shown to the Player)
     HUD hud;
 
     bool isGameStarted = false;
-
-    // Used to store the Company's Stock Price for each day
-    Queue<float> stockPriceHistory = new Queue<float>();
 
     float timeUntilNextNews = 0;
     float timeUntilPriceChange = 0;
@@ -127,8 +123,6 @@ public class Game : MonoBehaviour
         if (timeUntilPriceChange <= 0)
         {
             ChangeStockPrice(CalculatePriceChange(false));
-            //TODO update the graph visuals
-            hud.AddGraphValue((int)currentCompany.stockPrice);
         }
         else
         {
@@ -166,13 +160,11 @@ public class Game : MonoBehaviour
     {
         currentCompany.stockPrice = Math.Clamp(currentCompany.stockPrice + delta, companyStockPriceLimits.x, companyStockPriceLimits.y);
 
-        stockPriceHistory.Dequeue();
-        stockPriceHistory.Enqueue(currentCompany.stockPrice);
-
         capital = ownedStocks * currentCompany.stockPrice;
 
         timeUntilPriceChange = changePriceTimerRate;
 
+        hud.AddGraphValue((int)currentCompany.stockPrice);
         UpdateMoneyUI();
     }
 
@@ -247,11 +239,6 @@ public class Game : MonoBehaviour
 
                 timeUntilNextNews = initialNewsDelay;
                 timeUntilPriceChange = changePriceTimerRate;
-
-                for (int i = 0; i < maxHistoryDays; ++i)
-                {
-                    stockPriceHistory.Enqueue(Random.Range(companyStockPriceLimits.x, company.stockPrice * 2));
-                }
 
                 isGameStarted = true;
 
